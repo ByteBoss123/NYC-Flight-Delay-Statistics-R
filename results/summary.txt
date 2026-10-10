@@ -1,0 +1,25 @@
+Flights in 2013: 336776
+Operated flights (departure recorded): 328521; cancelled or missing: 8255
+Departure delay rate (15+ min): 22.2%
+Flights matched to an hourly weather record: 326993 (99.5%)
+Analysis set: 326898 flights
+
+== Hypothesis tests ==
+Delay rate by airport: EWR 25.3%, JFK 21.3%, LGA 19.5%
+Chi-square test of independence (airport vs delayed): X2 = 1130.8, df = 2, p = 2.82e-246; Cramer's V = 0.059
+Delay rate with precipitation 40.0% vs without 21.0%; difference 19.0 pts, 95% CI [18.3, 19.7], p < 1e-300
+Wilcoxon rank-sum, departure delay minutes, precip vs none: W = 2345288634, p < 1e-300 (medians 5 vs -2 min)
+Delay rate by scheduled hour: 6.3% at 5:00 rising to 37.8% at 21:00 (delays build up through the day)
+
+== Logistic regression (train Jan-Sep, test Oct-Dec) ==
+Train 245273 flights (23.0% delayed); test 81625 flights (19.6% delayed)
+Test AUC: hour-of-day only 0.647; full model 0.681
+Test Brier score: hour only 0.1529; full 0.1476; always-predict-train-rate 0.1589
+Calibration: mean predicted 21.5% vs actual 19.6% on the test months
+Likelihood-ratio test, full vs hour-only (train): deviance drop 8335 on 14 df, p < 1e-300
+Odds ratio precip_any  2.52 (95% CI 2.42-2.61)
+Odds ratio low_vis     1.71 (95% CI 1.62-1.80)
+Odds ratio wind_speed  1.02 (95% CI 1.02-1.02)
+Odds ratio originJFK   0.83 (95% CI 0.80-0.86)
+Odds ratio originLGA   0.88 (95% CI 0.85-0.91)
+Riskiest 10% of test flights: 41.0% delayed vs 6.5% in the safest 10% (6.3x)
